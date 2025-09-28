@@ -1,5 +1,6 @@
 #pragma once
 #include <stdbool.h>
+#include <Platform/Platform.h>
 
 #define DECLARE_VECTOR(TYPE,NAME) \
 typedef struct\

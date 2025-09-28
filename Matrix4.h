@@ -1,5 +1,8 @@
 #pragma once
 #include "Vector4.h"
+#if defined (PLATFORM_SSE2_AVAILABLE)
+#include <xmmintrin.h>
+#endif
 
 typedef vec4 mat4[4];
 
@@ -13,14 +16,20 @@ inline void math_mat4_copy(const mat4 input, mat4 output)
 
 inline void math_mat4_transpose_to(const mat4 input, mat4 output)
 	{
-#if defined(__wasm__) && defined(__wasm_simd128__)
-	glm_mat4_transp_wasm(input, output);
-#elif defined(__AVX__)
-	glm_mat4_transp_avx(input, output);
-#elif defined( __SSE__ ) || defined( __SSE2__ )
-	glm_mat4_transp_sse2(input, output);
-#elif defined(CGLM_NEON_FP)
-	glm_mat4_transp_neon(input, output);
+#if defined ( PLATFORM_SSE2_AVAILABLE )
+	__m128 r0, r1, r2, r3;
+
+	r0 = _mm_load_ps ( input[0].raw );
+	r1 = _mm_load_ps ( input[1].raw );
+	r2 = _mm_load_ps ( input[2].raw );
+	r3 = _mm_load_ps ( input[3].raw );
+
+	_MM_TRANSPOSE4_PS ( r0, r1, r2, r3 );
+
+	_mm_store_ps ( output[0].raw, r0 );
+	_mm_store_ps ( output[1].raw, r1 );
+	_mm_store_ps ( output[2].raw, r2 );
+	_mm_store_ps ( output[3].raw, r3 );
 #else
 	output[0].raw[0] = input[0].raw[0]; output[1].raw[0] = input[0].raw[1];
 	output[0].raw[1] = input[1].raw[0]; output[1].raw[1] = input[1].raw[1];
