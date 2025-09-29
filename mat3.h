@@ -1,5 +1,5 @@
 #pragma once
-#include "Vector3.h"
+#include "vec3.h"
 
 typedef vec3 mat3[3];
 
