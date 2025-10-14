@@ -14,7 +14,15 @@ typedef struct
 		};
 	}vec4;
 
-inline void math_vec4_copy ( const vec4 input, vec4 *output )
+inline void math_vec4_set ( vec4 *output, const float v1, const float v2, const float v3, const float v4 )
+	{
+	output->raw[0] = v1;
+	output->raw[1] = v2;
+	output->raw[2] = v3;
+	output->raw[3] = v4;
+	}
+
+inline void math_vec4_copy ( vec4 *output, const vec4 input )
 	{
 	for ( unsigned index = 0; index < 4; ++index )
 		output->raw[index] = input.raw[index];
@@ -30,8 +38,7 @@ inline bool math_vec4_equals ( const vec4 first, const vec4 second )
 	return true;
 	}
 
-
-inline void math_vec4_add ( const vec4 first, const vec4 second, vec4 *output )
+inline void math_vec4_add ( vec4 *output, const vec4 first, const vec4 second )
 	{
 	for ( unsigned index = 0; index < 4; ++index )
 		{
@@ -39,7 +46,7 @@ inline void math_vec4_add ( const vec4 first, const vec4 second, vec4 *output )
 		}
 	}
 
-inline void math_vec4_subtract ( const vec4 first, const vec4 second, vec4 *output )
+inline void math_vec4_subtract ( vec4 *output, const vec4 first, const vec4 second )
 	{
 	for ( unsigned index = 0; index < 4; ++index )
 		{
@@ -78,5 +85,24 @@ inline void math_vec4_normalize ( vec4 *output )
 	{
 	float length = math_vec4_length ( *output );
 	for ( unsigned index = 0; index < 4; ++index )
-		output->raw[index] /= length;
+		output->raw[index] = (float) ( (float) output->raw[index] / length );
+	}
+
+inline void math_vec4_normalize_to ( vec4 *output, vec4 input )
+	{
+	float length = math_vec4_length ( input );
+	for ( unsigned index = 0; index < 4; ++index )
+		output->raw[index] = (float) ( (float) input.raw[index] / length );
+	}
+
+inline void math_vec4_scale ( vec4 *output, const float scale )
+	{
+	for ( unsigned index = 0; index < 4; ++index )
+		output->raw[index] = (float) ( (float) output->raw[index] * scale );
+	}
+
+inline void math_vec4_scale_to ( vec4 *output, vec4 input, const float scale )
+	{
+	for ( unsigned index = 0; index < 4; ++index )
+		output->raw[index] = (float) ( (float) input.raw[index] * scale );
 	}

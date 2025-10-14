@@ -14,7 +14,13 @@ typedef struct
 		};
 	}TYPENAME;
 
-inline void math_TYPENAME_copy ( const TYPENAME input, TYPENAME *output )
+inline void math_TYPENAME_set ( TYPENAME *output, const TYPE v1, const TYPE v2 )
+	{
+	output->raw[0] = v1;
+	output->raw[1] = v2;
+	}
+
+inline void math_TYPENAME_copy ( TYPENAME *output, const TYPENAME input)
 	{
 	for ( unsigned index = 0; index < 2; ++index )
 		output->raw[index] = input.raw[index];
@@ -30,7 +36,7 @@ inline bool math_TYPENAME_equals ( const TYPENAME first, const TYPENAME second )
 	return true;
 	}
 
-inline void math_TYPENAME_add ( const TYPENAME first, const TYPENAME second, TYPENAME *output )
+inline void math_TYPENAME_add ( TYPENAME *output, const TYPENAME first, const TYPENAME second)
 	{
 	for ( unsigned index = 0; index < 2; ++index )
 		{
@@ -38,7 +44,7 @@ inline void math_TYPENAME_add ( const TYPENAME first, const TYPENAME second, TYP
 		}
 	}
 
-inline void math_TYPENAME_subtract ( const TYPENAME first, const TYPENAME second, TYPENAME *output )
+inline void math_TYPENAME_subtract ( TYPENAME *output, const TYPENAME first, const TYPENAME second )
 	{
 	for ( unsigned index = 0; index < 2; ++index )
 		{
@@ -76,5 +82,5 @@ inline void math_TYPENAME_normalize ( TYPENAME *output )
 	{
 	float length = math_TYPENAME_length ( *output );
 	for ( unsigned index = 0; index < 2; ++index )
-		output->raw[index] /= length;
+		output->raw[index] = ( TYPE ) ((float) output->raw[index] / length);
 	}
