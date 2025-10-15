@@ -1,18 +1,7 @@
 #pragma once
+#include "types.h"
 #include <stdbool.h>
 #include <math.h>
-
-typedef struct
-	{
-	union
-		{
-		struct
-			{
-			int x, y, z, w;
-			};
-		int raw[4];
-		};
-	}ivec4;
 
 inline void math_ivec4_set ( ivec4 *output, const int v1, const int v2, const int v3, const int v4 )
 	{
@@ -65,6 +54,14 @@ inline float math_ivec4_length_squared ( const ivec4 input )
 inline float math_ivec4_length ( const ivec4 input )
 	{
 	return sqrtf ( math_ivec4_length_squared ( input ) );
+	}
+
+inline bool math_ivec4_is_zero ( const ivec4 input )
+	{
+	for ( unsigned index = 0; index < 4; ++index )
+		if ( input.raw[index] != 0 )
+			return false;
+	return true;
 	}
 
 inline void math_ivec4_set_to_zero ( ivec4 *output )

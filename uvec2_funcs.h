@@ -1,20 +1,9 @@
 #pragma once
+#include "types.h"
 #include <stdbool.h>
 #include <math.h>
 
-typedef struct
-	{
-	union
-		{
-		struct
-			{
-			unsigned x, y;
-			};
-		unsigned raw[2];
-		};
-	}uvec2;
-
-inline void math_uvec2_set ( uvec2 *output, const unsigned v1, const unsigned v2)
+inline void math_uvec2_set ( uvec2 *output, const unsigned v1, const unsigned v2 )
 	{
 	output->raw[0] = v1;
 	output->raw[1] = v2;
@@ -63,6 +52,14 @@ inline float math_uvec2_length_squared ( const uvec2 input )
 inline float math_uvec2_length ( const uvec2 input )
 	{
 	return sqrtf ( math_uvec2_length_squared ( input ) );
+	}
+
+inline bool math_uvec2_is_zero ( const uvec2 input )
+	{
+	for ( unsigned index = 0; index < 2; ++index )
+		if ( input.raw[index] != 0 )
+			return false;
+	return true;
 	}
 
 inline void math_uvec2_set_to_zero ( uvec2 *output )

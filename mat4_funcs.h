@@ -1,6 +1,5 @@
 #pragma once
-#include "mat4.h"
-#include "vec3.h"
+#include "types.h"
 #include <stdio.h>
 #include <stdarg.h>
 
@@ -34,22 +33,13 @@ inline void math_mat4_copy ( mat4 *output, const mat4 input )
 
 inline void math_mat4_transpose_to ( mat4 *output, const mat4 input )
 	{
-	output[0].raw[0] = input.vectors[0].raw[0];
-	output[1].raw[0] = input.vectors[0].raw[1];
-	output[0].raw[1] = input.vectors[1].raw[0];
-	output[1].raw[1] = input.vectors[1].raw[1];
-	output[0].raw[2] = input.vectors[2].raw[0];
-	output[1].raw[2] = input.vectors[2].raw[1];
-	output[0].raw[3] = input.vectors[3].raw[0];
-	output[1].raw[3] = input.vectors[3].raw[1];
-	output[2].raw[0] = input.vectors[0].raw[2];
-	output[3].raw[0] = input.vectors[0].raw[3];
-	output[2].raw[1] = input.vectors[1].raw[2];
-	output[3].raw[1] = input.vectors[1].raw[3];
-	output[2].raw[2] = input.vectors[2].raw[2];
-	output[3].raw[2] = input.vectors[2].raw[3];
-	output[2].raw[3] = input.vectors[3].raw[2];
-	output[3].raw[3] = input.vectors[3].raw[3];
+	for ( unsigned iterator1 = 0; iterator1 < 4; ++iterator1 )
+		{
+		for ( unsigned iterator2 = 0; iterator2 < 4; ++iterator2 )
+			{
+			output->vectors[iterator1].raw[iterator2] = input.vectors[iterator2].raw[iterator1];
+			}
+		}
 	}
 
 inline void math_mat4_set_zero ( mat4 *output )
@@ -307,3 +297,4 @@ inline void math_mat4_multiply_multiple_to ( mat4 *output, unsigned matrix_count
 		}
 	va_end ( argptr );
 	}
+

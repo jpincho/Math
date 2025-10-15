@@ -1,18 +1,7 @@
 #pragma once
+#include "types.h"
 #include <stdbool.h>
 #include <math.h>
-
-typedef struct
-	{
-	union
-		{
-		struct
-			{
-			float x, y, z;
-			};
-		float raw[3];
-		};
-	}vec3;
 
 inline void math_vec3_set ( vec3 *output, const float v1, const float v2, const float v3 )
 	{
@@ -64,6 +53,14 @@ inline float math_vec3_length_squared ( const vec3 input )
 inline float math_vec3_length ( const vec3 input )
 	{
 	return sqrtf ( math_vec3_length_squared ( input ) );
+	}
+
+inline bool math_vec3_is_zero ( const vec3 input )
+	{
+	for ( unsigned index = 0; index < 3; ++index )
+		if ( input.raw[index] != 0.0f )
+			return false;
+	return true;
 	}
 
 inline void math_vec3_set_to_zero ( vec3 *output )

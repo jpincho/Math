@@ -1,24 +1,14 @@
 #pragma once
+#include "types.h"
 #include <stdbool.h>
 #include <math.h>
 
-typedef struct
-	{
-	union
-		{
-		struct
-			{
-			TYPE x, y, z;
-			};
-		TYPE raw[COMPONENT_COUNT];
-		};
-	}TYPENAME;
-
-inline void math_TYPENAME_set ( TYPENAME *output, const TYPE v1, const TYPE v2, const TYPE v3 )
+inline void math_TYPENAME_set ( TYPENAME *output, const TYPE v1, const TYPE v2, const TYPE v3, const TYPE v4 )
 	{
 	output->raw[0] = v1;
 	output->raw[1] = v2;
 	output->raw[2] = v3;
+	output->raw[3] = v4;
 	}
 
 inline void math_TYPENAME_copy ( TYPENAME *output, const TYPENAME input )
@@ -64,6 +54,14 @@ inline float math_TYPENAME_length_squared ( const TYPENAME input )
 inline float math_TYPENAME_length ( const TYPENAME input )
 	{
 	return sqrtf ( math_TYPENAME_length_squared ( input ) );
+	}
+
+inline bool math_TYPENAME_is_zero ( const TYPENAME input )
+	{
+	for ( unsigned index = 0; index < COMPONENT_COUNT; ++index )
+		if ( input.raw[index] != ZERO )
+			return false;
+	return true;
 	}
 
 inline void math_TYPENAME_set_to_zero ( TYPENAME *output )
