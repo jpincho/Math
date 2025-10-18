@@ -43,6 +43,22 @@ inline void math_vec4_subtract ( vec4 *output, const vec4 first, const vec4 seco
         }
     }
 
+inline void math_vec4_multiply ( vec4 *output, const vec4 first, const vec4 second )
+	{
+	for ( unsigned index = 0; index < 4; ++index )
+		{
+		output->raw[index] = first.raw[index] * second.raw[index];
+		}
+	}
+
+inline void math_vec4_divide ( vec4 *output, const vec4 first, const vec4 second )
+	{
+	for ( unsigned index = 0; index < 4; ++index )
+		{
+		output->raw[index] = first.raw[index] / second.raw[index];
+		}
+	}
+
 inline float math_vec4_length_squared ( const vec4 input )
     {
     float result = 0;
@@ -92,14 +108,14 @@ inline void math_vec4_normalize_to ( vec4 *output, vec4 input )
         output->raw[index] = (float) ( (float) input.raw[index] / length );
     }
 
-inline void math_vec4_scale ( vec4 *output, const float scale )
-    {
-    for ( unsigned index = 0; index < 4; ++index )
-        output->raw[index] = (float) ( (float) output->raw[index] * scale );
-    }
+inline void math_vec4_scale_inplace ( vec4 *output, const float scale )
+	{
+	for ( unsigned index = 0; index < 4; ++index )
+		output->raw[index] = (float) ( (float) output->raw[index] * scale );
+	}
 
-inline void math_vec4_scale_to ( vec4 *output, vec4 input, const float scale )
-    {
-    for ( unsigned index = 0; index < 4; ++index )
-        output->raw[index] = (float) ( (float) input.raw[index] * scale );
-    }
+inline void math_vec4_scale ( vec4 *output, vec4 input, const float scale )
+	{
+	for ( unsigned index = 0; index < 4; ++index )
+		output->raw[index] = (float) ( (float) input.raw[index] * scale );
+	}

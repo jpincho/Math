@@ -42,6 +42,22 @@ inline void math_uvec3_subtract ( uvec3 *output, const uvec3 first, const uvec3 
         }
     }
 
+inline void math_uvec3_multiply ( uvec3 *output, const uvec3 first, const uvec3 second )
+	{
+	for ( unsigned index = 0; index < 3; ++index )
+		{
+		output->raw[index] = first.raw[index] * second.raw[index];
+		}
+	}
+
+inline void math_uvec3_divide ( uvec3 *output, const uvec3 first, const uvec3 second )
+	{
+	for ( unsigned index = 0; index < 3; ++index )
+		{
+		output->raw[index] = first.raw[index] / second.raw[index];
+		}
+	}
+
 inline float math_uvec3_length_squared ( const uvec3 input )
     {
     float result = 0;
@@ -98,14 +114,14 @@ inline void math_uvec3_normalize_to ( uvec3 *output, uvec3 input )
         output->raw[index] = (unsigned) ( (float) input.raw[index] / length );
     }
 
-inline void math_uvec3_scale ( uvec3 *output, const float scale )
-    {
-    for ( unsigned index = 0; index < 3; ++index )
-        output->raw[index] = (unsigned) ( (float) output->raw[index] * scale );
-    }
+inline void math_uvec3_scale_inplace ( uvec3 *output, const float scale )
+	{
+	for ( unsigned index = 0; index < 3; ++index )
+		output->raw[index] = (unsigned) ( (float) output->raw[index] * scale );
+	}
 
-inline void math_uvec3_scale_to ( uvec3 *output, uvec3 input, const float scale )
-    {
-    for ( unsigned index = 0; index < 3; ++index )
-        output->raw[index] = (unsigned) ( (float) input.raw[index] * scale );
-    }
+inline void math_uvec3_scale ( uvec3 *output, uvec3 input, const float scale )
+	{
+	for ( unsigned index = 0; index < 3; ++index )
+		output->raw[index] = (unsigned) ( (float) input.raw[index] * scale );
+	}

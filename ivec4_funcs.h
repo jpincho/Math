@@ -43,6 +43,22 @@ inline void math_ivec4_subtract ( ivec4 *output, const ivec4 first, const ivec4 
         }
     }
 
+inline void math_ivec4_multiply ( ivec4 *output, const ivec4 first, const ivec4 second )
+	{
+	for ( unsigned index = 0; index < 4; ++index )
+		{
+		output->raw[index] = first.raw[index] * second.raw[index];
+		}
+	}
+
+inline void math_ivec4_divide ( ivec4 *output, const ivec4 first, const ivec4 second )
+	{
+	for ( unsigned index = 0; index < 4; ++index )
+		{
+		output->raw[index] = first.raw[index] / second.raw[index];
+		}
+	}
+
 inline float math_ivec4_length_squared ( const ivec4 input )
     {
     float result = 0;
@@ -92,14 +108,14 @@ inline void math_ivec4_normalize_to ( ivec4 *output, ivec4 input )
         output->raw[index] = (int) ( (float) input.raw[index] / length );
     }
 
-inline void math_ivec4_scale ( ivec4 *output, const float scale )
-    {
-    for ( unsigned index = 0; index < 4; ++index )
-        output->raw[index] = (int) ( (float) output->raw[index] * scale );
-    }
+inline void math_ivec4_scale_inplace ( ivec4 *output, const float scale )
+	{
+	for ( unsigned index = 0; index < 4; ++index )
+		output->raw[index] = (int) ( (float) output->raw[index] * scale );
+	}
 
-inline void math_ivec4_scale_to ( ivec4 *output, ivec4 input, const float scale )
-    {
-    for ( unsigned index = 0; index < 4; ++index )
-        output->raw[index] = (int) ( (float) input.raw[index] * scale );
-    }
+inline void math_ivec4_scale ( ivec4 *output, ivec4 input, const float scale )
+	{
+	for ( unsigned index = 0; index < 4; ++index )
+		output->raw[index] = (int) ( (float) input.raw[index] * scale );
+	}

@@ -23,5 +23,4 @@ generate_vec_code(3 "uvec3" "unsigned" "0")
 generate_vec_code(4 "vec4" "float" "0.0f")
 generate_vec_code(4 "ivec4" "int" "0")
 generate_vec_code(4 "uvec4" "unsigned" "0")
-
 endif()

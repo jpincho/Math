@@ -124,12 +124,12 @@ inline void math_mat4_set_rotation_matrix ( mat4 *output, const float angle, con
     float cosine = cosf ( angle );
 
     math_vec3_normalize_to ( &normalized_axis, axis );
-    math_vec3_scale_to ( &scaled_normalized_1_minus_cos, normalized_axis, 1.0f - cosine );
-    math_vec3_scale_to ( &scaled_normalized_sin, normalized_axis, sinf ( angle ) );
+    math_vec3_scale ( &scaled_normalized_1_minus_cos, normalized_axis, 1.0f - cosine );
+    math_vec3_scale ( &scaled_normalized_sin, normalized_axis, sinf ( angle ) );
 
-    math_vec3_scale_to ( (vec3 *) &output->vectors[0], normalized_axis, scaled_normalized_1_minus_cos.raw[0] );
-    math_vec3_scale_to ( (vec3 *) &output->vectors[1], normalized_axis, scaled_normalized_1_minus_cos.raw[1] );
-    math_vec3_scale_to ( (vec3 *) &output->vectors[2], normalized_axis, scaled_normalized_1_minus_cos.raw[2] );
+    math_vec3_scale ( (vec3 *) &output->vectors[0], normalized_axis, scaled_normalized_1_minus_cos.raw[0] );
+    math_vec3_scale ( (vec3 *) &output->vectors[1], normalized_axis, scaled_normalized_1_minus_cos.raw[1] );
+    math_vec3_scale ( (vec3 *) &output->vectors[2], normalized_axis, scaled_normalized_1_minus_cos.raw[2] );
 
     output->vectors[0].raw[0] += cosine;
     output->vectors[1].raw[0] -= scaled_normalized_sin.raw[2];

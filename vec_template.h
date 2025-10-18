@@ -43,6 +43,22 @@ inline void math_TYPENAME_subtract ( TYPENAME *output, const TYPENAME first, con
         }
     }
 
+inline void math_TYPENAME_multiply ( TYPENAME *output, const TYPENAME first, const TYPENAME second )
+	{
+	for ( unsigned index = 0; index < COMPONENT_COUNT; ++index )
+		{
+		output->raw[index] = first.raw[index] * second.raw[index];
+		}
+	}
+
+inline void math_TYPENAME_divide ( TYPENAME *output, const TYPENAME first, const TYPENAME second )
+	{
+	for ( unsigned index = 0; index < COMPONENT_COUNT; ++index )
+		{
+		output->raw[index] = first.raw[index] / second.raw[index];
+		}
+	}
+
 inline float math_TYPENAME_length_squared ( const TYPENAME input )
     {
     float result = 0;
@@ -99,14 +115,14 @@ inline void math_TYPENAME_normalize_to ( TYPENAME *output, TYPENAME input )
         output->raw[index] = (TYPE) ( (float) input.raw[index] / length );
     }
 
-inline void math_TYPENAME_scale ( TYPENAME *output, const float scale )
-    {
-    for ( unsigned index = 0; index < COMPONENT_COUNT; ++index )
-        output->raw[index] = (TYPE) ( (float) output->raw[index] * scale );
-    }
+inline void math_TYPENAME_scale_inplace ( TYPENAME *output, const float scale )
+	{
+	for ( unsigned index = 0; index < COMPONENT_COUNT; ++index )
+		output->raw[index] = (TYPE) ( (float) output->raw[index] * scale );
+	}
 
-inline void math_TYPENAME_scale_to ( TYPENAME *output, TYPENAME input, const float scale )
-    {
-    for ( unsigned index = 0; index < COMPONENT_COUNT; ++index )
-        output->raw[index] = (TYPE) ( (float) input.raw[index] * scale );
-    }
+inline void math_TYPENAME_scale ( TYPENAME *output, TYPENAME input, const float scale )
+	{
+	for ( unsigned index = 0; index < COMPONENT_COUNT; ++index )
+		output->raw[index] = (TYPE) ( (float) input.raw[index] * scale );
+	}

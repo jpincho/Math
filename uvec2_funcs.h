@@ -41,6 +41,22 @@ inline void math_uvec2_subtract ( uvec2 *output, const uvec2 first, const uvec2 
         }
     }
 
+inline void math_uvec2_multiply ( uvec2 *output, const uvec2 first, const uvec2 second )
+	{
+	for ( unsigned index = 0; index < 2; ++index )
+		{
+		output->raw[index] = first.raw[index] * second.raw[index];
+		}
+	}
+
+inline void math_uvec2_divide ( uvec2 *output, const uvec2 first, const uvec2 second )
+	{
+	for ( unsigned index = 0; index < 2; ++index )
+		{
+		output->raw[index] = first.raw[index] / second.raw[index];
+		}
+	}
+
 inline float math_uvec2_length_squared ( const uvec2 input )
     {
     float result = 0;
@@ -90,14 +106,14 @@ inline void math_uvec2_normalize_to ( uvec2 *output, uvec2 input )
         output->raw[index] = (unsigned) ( (float) input.raw[index] / length );
     }
 
-inline void math_uvec2_scale ( uvec2 *output, const float scale )
-    {
-    for ( unsigned index = 0; index < 2; ++index )
-        output->raw[index] = (unsigned) ( (float) output->raw[index] * scale );
-    }
+inline void math_uvec2_scale_inplace ( uvec2 *output, const float scale )
+	{
+	for ( unsigned index = 0; index < 2; ++index )
+		output->raw[index] = (unsigned) ( (float) output->raw[index] * scale );
+	}
 
-inline void math_uvec2_scale_to ( uvec2 *output, uvec2 input, const float scale )
-    {
-    for ( unsigned index = 0; index < 2; ++index )
-        output->raw[index] = (unsigned) ( (float) input.raw[index] * scale );
-    }
+inline void math_uvec2_scale ( uvec2 *output, uvec2 input, const float scale )
+	{
+	for ( unsigned index = 0; index < 2; ++index )
+		output->raw[index] = (unsigned) ( (float) input.raw[index] * scale );
+	}
