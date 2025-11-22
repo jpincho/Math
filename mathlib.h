@@ -16,3 +16,5 @@
 #include "mat2_funcs.h"
 #include "mat3_funcs.h"
 #include "mat4_funcs.h"
+
+#include "constants.h"

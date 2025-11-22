@@ -24,3 +24,6 @@ generate_vec_code(4 "vec4" "float" "0.0f")
 generate_vec_code(4 "ivec4" "int" "0")
 generate_vec_code(4 "uvec4" "unsigned" "0")
 endif()
+
+file ( GLOB SOURCES "*.h" "*.c" )
+add_library ( Math ${SOURCES} )
