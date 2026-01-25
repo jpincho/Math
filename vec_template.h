@@ -105,24 +105,24 @@ inline void math_TYPENAME_normalize ( TYPENAME *output )
 	{
 	float length = math_TYPENAME_length ( *output );
 	for ( unsigned index = 0; index < COMPONENT_COUNT; ++index )
-		output->raw[index] = (TYPE) ( (float) output->raw[index] / length );
+		output->raw[index] = ( TYPE ) ( ( float ) output->raw[index] / length );
 	}
 
 inline void math_TYPENAME_normalize_to ( TYPENAME *output, TYPENAME input )
 	{
 	float length = math_TYPENAME_length ( input );
 	for ( unsigned index = 0; index < COMPONENT_COUNT; ++index )
-		output->raw[index] = (TYPE) ( (float) input.raw[index] / length );
+		output->raw[index] = ( TYPE ) ( ( float ) input.raw[index] / length );
 	}
 
 inline void math_TYPENAME_scale_inplace ( TYPENAME *output, const float scale )
 	{
 	for ( unsigned index = 0; index < COMPONENT_COUNT; ++index )
-		output->raw[index] = (TYPE) ( (float) output->raw[index] * scale );
+		output->raw[index] = ( TYPE ) ( ( float ) output->raw[index] * scale );
 	}
 
 inline void math_TYPENAME_scale ( TYPENAME *output, TYPENAME input, const float scale )
 	{
 	for ( unsigned index = 0; index < COMPONENT_COUNT; ++index )
-		output->raw[index] = (TYPE) ( (float) input.raw[index] * scale );
+		output->raw[index] = ( TYPE ) ( ( float ) input.raw[index] * scale );
 	}

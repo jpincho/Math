@@ -104,24 +104,24 @@ inline void math_ivec3_normalize ( ivec3 *output )
 	{
 	float length = math_ivec3_length ( *output );
 	for ( unsigned index = 0; index < 3; ++index )
-		output->raw[index] = (int) ( (float) output->raw[index] / length );
+		output->raw[index] = ( int ) ( ( float ) output->raw[index] / length );
 	}
 
 inline void math_ivec3_normalize_to ( ivec3 *output, ivec3 input )
 	{
 	float length = math_ivec3_length ( input );
 	for ( unsigned index = 0; index < 3; ++index )
-		output->raw[index] = (int) ( (float) input.raw[index] / length );
+		output->raw[index] = ( int ) ( ( float ) input.raw[index] / length );
 	}
 
 inline void math_ivec3_scale_inplace ( ivec3 *output, const float scale )
 	{
 	for ( unsigned index = 0; index < 3; ++index )
-		output->raw[index] = (int) ( (float) output->raw[index] * scale );
+		output->raw[index] = ( int ) ( ( float ) output->raw[index] * scale );
 	}
 
 inline void math_ivec3_scale ( ivec3 *output, ivec3 input, const float scale )
 	{
 	for ( unsigned index = 0; index < 3; ++index )
-		output->raw[index] = (int) ( (float) input.raw[index] * scale );
+		output->raw[index] = ( int ) ( ( float ) input.raw[index] * scale );
 	}

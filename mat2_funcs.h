@@ -31,7 +31,7 @@ inline void math_mat2_copy ( mat2 *output, const mat2 input )
 		}
 	}
 
-inline void math_mat2_transpose_to ( mat2 *output, const mat2 input )
+inline void math_mat2_transpose ( mat2 *output, const mat2 input )
 	{
 	for ( unsigned iterator1 = 0; iterator1 < 2; ++iterator1 )
 		{

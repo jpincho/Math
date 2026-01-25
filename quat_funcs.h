@@ -17,11 +17,52 @@ inline float math_quat_length ( const quat input )
 	return sqrtf ( result );
 	}
 
+inline void math_quat_normalize ( quat *output )
+	{
+	float dot = math_vec4_length_squared ( *output );
+
+	if ( dot <= 0.0f )
+		{
+		math_quat_set_identity ( output );
+		return;
+		}
+
+	math_vec4_scale ( output, *output, 1.0f / sqrtf ( dot ) );
+	}
+
+inline void math_quat_multiply_by_quat ( quat *output, const quat input1, const quat input2 )
+	{
+	const float x1x2 = input1.x * input2.x;
+	const float x1y2 = input1.x * input2.y;
+	const float x1z2 = input1.x * input2.z;
+	const float x1w2 = input1.x * input2.w;
+
+	const float y1x2 = input1.y * input2.x;
+	const float y1y2 = input1.y * input2.y;
+	const float y1z2 = input1.y * input2.z;
+	const float y1w2 = input1.y * input2.w;
+
+	const float z1x2 = input1.z * input2.x;
+	const float z1y2 = input1.z * input2.y;
+	const float z1z2 = input1.z * input2.z;
+	const float z1w2 = input1.z * input2.w;
+
+	const float w1x2 = input1.w * input2.x;
+	const float w1y2 = input1.w * input2.y;
+	const float w1z2 = input1.w * input2.z;
+	const float w1w2 = input1.w * input2.w;
+
+	output->x = w1x2 + x1w2 + y1z2 - z1y2;
+	output->y = w1y2 - x1z2 + y1w2 + z1x2;
+	output->z = w1z2 + x1y2 - y1x2 + z1w2;
+	output->w = w1w2 - x1x2 - y1y2 - z1z2;
+	}
+
 inline void math_quat_to_mat3 ( mat3 *output, const quat input )
 	{
 	float xx, yy, zz,
-	      xy, yz, xz,
-	      wx, wy, wz, norm, s;
+		xy, yz, xz,
+		wx, wy, wz, norm, s;
 
 	norm = math_vec4_length ( input );
 	s = norm > 0.0f ? 2.0f / norm : 0.0f;
@@ -225,6 +266,20 @@ inline void math_quat_from_euler ( quat *output, const vec3 input )
 	output->raw[3] = xc * yc * zc - xs * ys * zs;
 	}
 
+inline void math_quat_from_axis_angle ( quat *output, const vec3 axis, float angle )
+	{
+	float half_angle = angle * 0.5f;
+	float half_angle_cos = cosf ( half_angle );
+	float half_angle_sin = sinf ( half_angle );
+	vec3 normalized_axis;
+	math_vec3_normalize_to ( &normalized_axis, axis );
+	output->raw[0] = half_angle_sin * normalized_axis.raw[0];
+	output->raw[1] = half_angle_sin * normalized_axis.raw[1];
+	output->raw[2] = half_angle_sin * normalized_axis.raw[2];
+	output->raw[3] = half_angle_cos;
+	math_quat_normalize ( output );
+	}
+
 inline void math_quat_look ( mat4 *output, const vec3 eye_position, const quat orientation )
 	{
 	math_quat_to_mat4_transposed ( output, orientation );
@@ -235,4 +290,12 @@ inline void math_quat_look ( mat4 *output, const vec3 eye_position, const quat o
 	math_vec4_multiply_by_mat4 ( &temp_eye, *output, temp_eye );
 	for ( unsigned index = 0; index < 4; ++index )
 		output->vectors[3].raw[index] = -output->vectors[3].raw[index];
+	}
+
+inline void math_quat_conjugate ( quat *output, const quat input )
+	{
+	output->x = -input.x;
+	output->y = -input.y;
+	output->z = -input.z;
+	output->w = input.w;
 	}

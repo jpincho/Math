@@ -96,24 +96,24 @@ inline void math_ivec2_normalize ( ivec2 *output )
 	{
 	float length = math_ivec2_length ( *output );
 	for ( unsigned index = 0; index < 2; ++index )
-		output->raw[index] = (int) ( (float) output->raw[index] / length );
+		output->raw[index] = ( int ) ( ( float ) output->raw[index] / length );
 	}
 
 inline void math_ivec2_normalize_to ( ivec2 *output, ivec2 input )
 	{
 	float length = math_ivec2_length ( input );
 	for ( unsigned index = 0; index < 2; ++index )
-		output->raw[index] = (int) ( (float) input.raw[index] / length );
+		output->raw[index] = ( int ) ( ( float ) input.raw[index] / length );
 	}
 
 inline void math_ivec2_scale_inplace ( ivec2 *output, const float scale )
 	{
 	for ( unsigned index = 0; index < 2; ++index )
-		output->raw[index] = (int) ( (float) output->raw[index] * scale );
+		output->raw[index] = ( int ) ( ( float ) output->raw[index] * scale );
 	}
 
 inline void math_ivec2_scale ( ivec2 *output, ivec2 input, const float scale )
 	{
 	for ( unsigned index = 0; index < 2; ++index )
-		output->raw[index] = (int) ( (float) input.raw[index] * scale );
+		output->raw[index] = ( int ) ( ( float ) input.raw[index] * scale );
 	}

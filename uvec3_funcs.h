@@ -104,24 +104,24 @@ inline void math_uvec3_normalize ( uvec3 *output )
 	{
 	float length = math_uvec3_length ( *output );
 	for ( unsigned index = 0; index < 3; ++index )
-		output->raw[index] = (unsigned) ( (float) output->raw[index] / length );
+		output->raw[index] = ( unsigned ) ( ( float ) output->raw[index] / length );
 	}
 
 inline void math_uvec3_normalize_to ( uvec3 *output, uvec3 input )
 	{
 	float length = math_uvec3_length ( input );
 	for ( unsigned index = 0; index < 3; ++index )
-		output->raw[index] = (unsigned) ( (float) input.raw[index] / length );
+		output->raw[index] = ( unsigned ) ( ( float ) input.raw[index] / length );
 	}
 
 inline void math_uvec3_scale_inplace ( uvec3 *output, const float scale )
 	{
 	for ( unsigned index = 0; index < 3; ++index )
-		output->raw[index] = (unsigned) ( (float) output->raw[index] * scale );
+		output->raw[index] = ( unsigned ) ( ( float ) output->raw[index] * scale );
 	}
 
 inline void math_uvec3_scale ( uvec3 *output, uvec3 input, const float scale )
 	{
 	for ( unsigned index = 0; index < 3; ++index )
-		output->raw[index] = (unsigned) ( (float) input.raw[index] * scale );
+		output->raw[index] = ( unsigned ) ( ( float ) input.raw[index] * scale );
 	}

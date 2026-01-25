@@ -96,24 +96,24 @@ inline void math_vec2_normalize ( vec2 *output )
 	{
 	float length = math_vec2_length ( *output );
 	for ( unsigned index = 0; index < 2; ++index )
-		output->raw[index] = (float) ( (float) output->raw[index] / length );
+		output->raw[index] = ( float ) ( ( float ) output->raw[index] / length );
 	}
 
 inline void math_vec2_normalize_to ( vec2 *output, vec2 input )
 	{
 	float length = math_vec2_length ( input );
 	for ( unsigned index = 0; index < 2; ++index )
-		output->raw[index] = (float) ( (float) input.raw[index] / length );
+		output->raw[index] = ( float ) ( ( float ) input.raw[index] / length );
 	}
 
 inline void math_vec2_scale_inplace ( vec2 *output, const float scale )
 	{
 	for ( unsigned index = 0; index < 2; ++index )
-		output->raw[index] = (float) ( (float) output->raw[index] * scale );
+		output->raw[index] = ( float ) ( ( float ) output->raw[index] * scale );
 	}
 
 inline void math_vec2_scale ( vec2 *output, vec2 input, const float scale )
 	{
 	for ( unsigned index = 0; index < 2; ++index )
-		output->raw[index] = (float) ( (float) input.raw[index] * scale );
+		output->raw[index] = ( float ) ( ( float ) input.raw[index] * scale );
 	}

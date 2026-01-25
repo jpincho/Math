@@ -104,26 +104,26 @@ inline void math_vec4_normalize ( vec4 *output )
 	{
 	float length = math_vec4_length ( *output );
 	for ( unsigned index = 0; index < 4; ++index )
-		output->raw[index] = (float) ( (float) output->raw[index] / length );
+		output->raw[index] = ( float ) ( ( float ) output->raw[index] / length );
 	}
 
 inline void math_vec4_normalize_to ( vec4 *output, vec4 input )
 	{
 	float length = math_vec4_length ( input );
 	for ( unsigned index = 0; index < 4; ++index )
-		output->raw[index] = (float) ( (float) input.raw[index] / length );
+		output->raw[index] = ( float ) ( ( float ) input.raw[index] / length );
 	}
 
 inline void math_vec4_scale_inplace ( vec4 *output, const float scale )
 	{
 	for ( unsigned index = 0; index < 4; ++index )
-		output->raw[index] = (float) ( (float) output->raw[index] * scale );
+		output->raw[index] = ( float ) ( ( float ) output->raw[index] * scale );
 	}
 
 inline void math_vec4_scale ( vec4 *output, vec4 input, const float scale )
 	{
 	for ( unsigned index = 0; index < 4; ++index )
-		output->raw[index] = (float) ( (float) input.raw[index] * scale );
+		output->raw[index] = ( float ) ( ( float ) input.raw[index] * scale );
 	}
 
 inline void math_vec4_multiply_by_mat4 ( vec4 *output, const mat4 input_matrix, const vec4 input_vector )
