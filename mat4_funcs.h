@@ -86,7 +86,7 @@ inline void math_mat4_set_perspective_matrix ( mat4 *output, const float vertica
 	output->vectors[3].raw[2] = 2.0f * near * far * fn;
 	}
 
-inline void math_mat4_set_view_matrix ( mat4 *output, const vec3 camera_pos, const vec3 front, const vec3 up )
+inline void math_mat4_set_right_handed_view_matrix ( mat4 *output, const vec3 camera_pos, const vec3 front, const vec3 up )
 	{
 	vec3 unit_front;
 	math_vec3_subtract ( &unit_front, front, camera_pos );
@@ -99,17 +99,20 @@ inline void math_mat4_set_view_matrix ( mat4 *output, const vec3 camera_pos, con
 	vec3 unit_up;
 	math_vec3_cross_product_to_output ( &unit_up, unit_side, unit_front );
 
-	output->vectors[0].raw[0] = unit_side.raw[0];
-	output->vectors[0].raw[1] = unit_up.raw[0];
-	output->vectors[0].raw[2] = -unit_front.raw[0];
+	output->vectors[0].raw[0] = unit_side.x;
+	output->vectors[1].raw[0] = unit_side.y;
+	output->vectors[2].raw[0] = unit_side.z;
+	
+	output->vectors[0].raw[1] = unit_up.x;
+	output->vectors[1].raw[1] = unit_up.y;
+	output->vectors[2].raw[1] = unit_up.z;
+	
+	output->vectors[0].raw[2] = -unit_front.x;
+	output->vectors[1].raw[2] = -unit_front.y;
+	output->vectors[2].raw[2] = -unit_front.z;
+	
 	output->vectors[0].raw[3] = 0.0f;
-	output->vectors[1].raw[0] = unit_side.raw[1];
-	output->vectors[1].raw[1] = unit_up.raw[1];
-	output->vectors[1].raw[2] = -unit_front.raw[1];
 	output->vectors[1].raw[3] = 0.0f;
-	output->vectors[2].raw[0] = unit_side.raw[2];
-	output->vectors[2].raw[1] = unit_up.raw[2];
-	output->vectors[2].raw[2] = -unit_front.raw[2];
 	output->vectors[2].raw[3] = 0.0f;
 	output->vectors[3].raw[0] = -math_vec3_dot_product ( unit_side, camera_pos );
 	output->vectors[3].raw[1] = -math_vec3_dot_product ( unit_up, camera_pos );
