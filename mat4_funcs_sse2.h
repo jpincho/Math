@@ -2,7 +2,7 @@
 #include <xmmintrin.h>
 #include "mat4.h"
 
-inline void math_mat4_sse2_transpose_to ( mat4 *output, const mat4 input )
+static inline void math_mat4_sse2_transpose_to ( mat4 *output, const mat4 input )
 	{
 	__m128 r0, r1, r2, r3;
 

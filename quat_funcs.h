@@ -3,13 +3,13 @@
 #include "vec4_funcs.h"
 #include <math.h>
 
-inline void math_quat_set_identity ( quat *output )
+static inline void math_quat_set_identity ( quat *output )
 	{
 	output->x = output->y = output->z = 0.0f;
 	output->w = 1.0f;
 	}
 
-inline float math_quat_length ( const quat input )
+static inline float math_quat_length ( const quat input )
 	{
 	float result = 0;
 	for ( unsigned index = 0; index < 4; ++index )
@@ -17,7 +17,7 @@ inline float math_quat_length ( const quat input )
 	return sqrtf ( result );
 	}
 
-inline void math_quat_normalize ( quat *output )
+static inline void math_quat_normalize ( quat *output )
 	{
 	float dot = math_vec4_length_squared ( *output );
 
@@ -30,7 +30,7 @@ inline void math_quat_normalize ( quat *output )
 	math_vec4_scale ( output, *output, 1.0f / sqrtf ( dot ) );
 	}
 
-inline void math_quat_multiply_by_quat ( quat *output, const quat input1, const quat input2 )
+static inline void math_quat_multiply_by_quat ( quat *output, const quat input1, const quat input2 )
 	{
 	const float x1x2 = input1.x * input2.x;
 	const float x1y2 = input1.x * input2.y;
@@ -58,11 +58,11 @@ inline void math_quat_multiply_by_quat ( quat *output, const quat input1, const 
 	output->w = w1w2 - x1x2 - y1y2 - z1z2;
 	}
 
-inline void math_quat_to_mat3 ( mat3 *output, const quat input )
+static inline void math_quat_to_mat3 ( mat3 *output, const quat input )
 	{
 	float xx, yy, zz,
-		xy, yz, xz,
-		wx, wy, wz, norm, s;
+	      xy, yz, xz,
+	      wx, wy, wz, norm, s;
 
 	norm = math_vec4_length ( input );
 	s = norm > 0.0f ? 2.0f / norm : 0.0f;
@@ -90,7 +90,7 @@ inline void math_quat_to_mat3 ( mat3 *output, const quat input )
 	output->vectors[2].raw[0] = xz - wy;
 	}
 
-inline void math_mat3_to_quat ( quat *output, const mat3 input )
+static inline void math_mat3_to_quat ( quat *output, const mat3 input )
 	{
 	float trace, r, rinv;
 	trace = input.vectors[0].raw[0] + input.vectors[1].raw[1] + input.vectors[2].raw[2];
@@ -136,7 +136,7 @@ inline void math_mat3_to_quat ( quat *output, const mat3 input )
 		}
 	}
 
-inline void math_quat_to_mat4 ( mat4 *output, const quat input )
+static inline void math_quat_to_mat4 ( mat4 *output, const quat input )
 	{
 	float length = math_quat_length ( input );
 	float sign = length > 0.0f ? 2.0f / length : 0.0f;
@@ -167,7 +167,7 @@ inline void math_quat_to_mat4 ( mat4 *output, const quat input )
 	output->vectors[0].raw[3] = output->vectors[1].raw[3] = output->vectors[2].raw[3] = 0.0f;
 	}
 
-inline void math_quat_to_mat4_transposed ( mat4 *output, const quat input )
+static inline void math_quat_to_mat4_transposed ( mat4 *output, const quat input )
 	{
 	float length = math_quat_length ( input );
 	float sign = length > 0.0f ? 2.0f / length : 0.0f;
@@ -203,7 +203,7 @@ inline void math_quat_to_mat4_transposed ( mat4 *output, const quat input )
 	output->vectors[3].raw[3] = 1.0f;
 	}
 
-inline void math_mat4_to_quat ( quat *output, const mat4 input )
+static inline void math_mat4_to_quat ( quat *output, const mat4 input )
 	{
 	float trace, r, rinv;
 	trace = input.vectors[0].raw[0] + input.vectors[1].raw[1] + input.vectors[2].raw[2];
@@ -249,7 +249,7 @@ inline void math_mat4_to_quat ( quat *output, const mat4 input )
 		}
 	}
 
-inline void math_quat_from_euler ( quat *output, const vec3 input )
+static inline void math_quat_from_euler ( quat *output, const vec3 input )
 	{
 	float xc, yc, zc, xs, ys, zs;
 
@@ -266,7 +266,7 @@ inline void math_quat_from_euler ( quat *output, const vec3 input )
 	output->raw[3] = xc * yc * zc - xs * ys * zs;
 	}
 
-inline void math_quat_from_axis_angle ( quat *output, const vec3 axis, float angle )
+static inline void math_quat_from_axis_angle ( quat *output, const vec3 axis, float angle )
 	{
 	float half_angle = angle * 0.5f;
 	float half_angle_cos = cosf ( half_angle );
@@ -280,7 +280,7 @@ inline void math_quat_from_axis_angle ( quat *output, const vec3 axis, float ang
 	math_quat_normalize ( output );
 	}
 
-inline void math_quat_look ( mat4 *output, const vec3 eye_position, const quat orientation )
+static inline void math_quat_look ( mat4 *output, const vec3 eye_position, const quat orientation )
 	{
 	math_quat_to_mat4_transposed ( output, orientation );
 
@@ -292,7 +292,7 @@ inline void math_quat_look ( mat4 *output, const vec3 eye_position, const quat o
 		output->vectors[3].raw[index] = -output->vectors[3].raw[index];
 	}
 
-inline void math_quat_conjugate ( quat *output, const quat input )
+static inline void math_quat_conjugate ( quat *output, const quat input )
 	{
 	output->x = -input.x;
 	output->y = -input.y;

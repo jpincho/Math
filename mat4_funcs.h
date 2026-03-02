@@ -1,29 +1,36 @@
 #pragma once
 #include "types.h"
+#include "vec4_funcs.h"
+#include "vec3_funcs.h"
+
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdbool.h>
 
-inline void math_mat4_dump ( const mat4 matrix )
+
+static inline void math_mat4_dump ( const mat4 matrix )
 	{
-	for ( unsigned index = 0; index < 4 * 4; ++index )
+	for ( unsigned column = 0; column < 4; ++column )
 		{
-		printf ( "%f ", matrix.raw[index] );
-		if ( ( index + 1 ) % 4 == 0 )
-			printf ( "\n" );
+		for ( unsigned row = 0; row < 4; ++row )
+			{
+			printf ( "%f ", matrix.raw[column][row] );
+			}
+		printf ( "\n" );
 		}
 	}
 
-inline bool math_mat4_equals ( const mat4 first, const mat4 second )
+static inline bool math_mat4_equals ( const mat4 first, const mat4 second )
 	{
 	for ( unsigned index = 0; index < 4 * 4; ++index )
 		{
-		if ( first.raw[index] != second.raw[index] )
+		if ( first.flat_raw[index] != second.flat_raw[index] )
 			return false;
 		}
 	return true;
 	}
 
-inline void math_mat4_copy ( mat4 *output, const mat4 input )
+static inline void math_mat4_copy ( mat4 *output, const mat4 input )
 	{
 	for ( unsigned column = 0; column < 4; ++column )
 		{
@@ -31,7 +38,7 @@ inline void math_mat4_copy ( mat4 *output, const mat4 input )
 		}
 	}
 
-inline void math_mat4_transpose ( mat4 *output, const mat4 input )
+static inline void math_mat4_transpose ( mat4 *output, const mat4 input )
 	{
 	for ( unsigned iterator1 = 0; iterator1 < 4; ++iterator1 )
 		{
@@ -42,35 +49,38 @@ inline void math_mat4_transpose ( mat4 *output, const mat4 input )
 		}
 	}
 
-inline void math_mat4_set_zero ( mat4 *output )
+static inline void math_mat4_set_zero ( mat4 *output )
 	{
 	for ( unsigned index = 0; index < 4 * 4; ++index )
 		{
-		output->raw[index] = 0.0f;
+		output->flat_raw[index] = 0.0f;
 		}
 	}
 
-inline void math_mat4_set_identity_matrix ( mat4 *output )
+static inline void math_mat4_set_identity_matrix ( mat4 *output )
 	{
-	output->raw[0] = 1.0f;
-	output->raw[1] = 0.0f;
-	output->raw[2] = 0.0f;
-	output->raw[3] = 0.0f;
-	output->raw[4] = 0.0f;
-	output->raw[5] = 1.0f;
-	output->raw[6] = 0.0f;
-	output->raw[7] = 0.0f;
-	output->raw[8] = 0.0f;
-	output->raw[9] = 0.0f;
-	output->raw[10] = 1.0f;
-	output->raw[11] = 0.0f;
-	output->raw[12] = 0.0f;
-	output->raw[13] = 0.0f;
-	output->raw[14] = 0.0f;
-	output->raw[15] = 1.0f;
+	output->raw[0][0] = 1.0f;
+	output->raw[0][1] = 0.0f;
+	output->raw[0][2] = 0.0f;
+	output->raw[0][3] = 0.0f;
+
+	output->raw[1][0] = 0.0f;
+	output->raw[1][1] = 1.0f;
+	output->raw[1][2] = 0.0f;
+	output->raw[1][3] = 0.0f;
+
+	output->raw[2][0] = 0.0f;
+	output->raw[2][1] = 0.0f;
+	output->raw[2][2] = 1.0f;
+	output->raw[2][3] = 0.0f;
+
+	output->raw[3][0] = 0.0f;
+	output->raw[3][1] = 0.0f;
+	output->raw[3][2] = 0.0f;
+	output->raw[3][3] = 1.0f;
 	}
 
-inline void math_mat4_set_perspective_matrix ( mat4 *output, const float vertical_fov, const float ratio, const float near, const float far )
+static inline void math_mat4_set_perspective_matrix ( mat4 *output, const float vertical_fov, const float ratio, const float near, const float far )
 	{
 	float f, fn;
 
@@ -86,7 +96,7 @@ inline void math_mat4_set_perspective_matrix ( mat4 *output, const float vertica
 	output->vectors[3].raw[2] = 2.0f * near * far * fn;
 	}
 
-inline void math_mat4_set_right_handed_view_matrix ( mat4 *output, const vec3 camera_pos, const vec3 front, const vec3 up )
+static inline void math_mat4_set_right_handed_view_matrix ( mat4 *output, const vec3 camera_pos, const vec3 front, const vec3 up )
 	{
 	vec3 unit_front;
 	math_vec3_subtract ( &unit_front, front, camera_pos );
@@ -102,15 +112,15 @@ inline void math_mat4_set_right_handed_view_matrix ( mat4 *output, const vec3 ca
 	output->vectors[0].raw[0] = unit_side.x;
 	output->vectors[1].raw[0] = unit_side.y;
 	output->vectors[2].raw[0] = unit_side.z;
-	
+
 	output->vectors[0].raw[1] = unit_up.x;
 	output->vectors[1].raw[1] = unit_up.y;
 	output->vectors[2].raw[1] = unit_up.z;
-	
+
 	output->vectors[0].raw[2] = -unit_front.x;
 	output->vectors[1].raw[2] = -unit_front.y;
 	output->vectors[2].raw[2] = -unit_front.z;
-	
+
 	output->vectors[0].raw[3] = 0.0f;
 	output->vectors[1].raw[3] = 0.0f;
 	output->vectors[2].raw[3] = 0.0f;
@@ -120,7 +130,12 @@ inline void math_mat4_set_right_handed_view_matrix ( mat4 *output, const vec3 ca
 	output->vectors[3].raw[3] = 1.0f;
 	}
 
-inline void math_mat4_set_rotation_matrix ( mat4 *output, const float angle, const vec3 axis )
+static inline void math_mat4_set_view_matrix ( mat4 *output, const vec3 camera_pos, const vec3 front, const vec3 up )
+	{
+	math_mat4_set_right_handed_view_matrix ( output, camera_pos, front, up );
+	}
+
+static inline void math_mat4_set_rotation_matrix ( mat4 *output, const float angle, const vec3 axis )
 	{
 	vec3 normalized_axis, scaled_normalized_1_minus_cos, scaled_normalized_sin;
 
@@ -148,7 +163,7 @@ inline void math_mat4_set_rotation_matrix ( mat4 *output, const float angle, con
 	output->vectors[3].raw[3] = 1.0f;
 	}
 
-inline void math_mat4_set_rotation_matrix_x ( mat4 *output, const float angle )
+static inline void math_mat4_set_rotation_matrix_x ( mat4 *output, const float angle )
 	{
 	float cosine = cosf ( angle );
 	float sin = sinf ( angle );
@@ -171,7 +186,7 @@ inline void math_mat4_set_rotation_matrix_x ( mat4 *output, const float angle )
 	output->vectors[3].raw[3] = 1.0f;
 	}
 
-inline void math_mat4_set_rotation_matrix_y ( mat4 *output, const float angle )
+static inline void math_mat4_set_rotation_matrix_y ( mat4 *output, const float angle )
 	{
 	float cosine = cosf ( angle );
 	float sin = sinf ( angle );
@@ -194,7 +209,7 @@ inline void math_mat4_set_rotation_matrix_y ( mat4 *output, const float angle )
 	output->vectors[3].raw[3] = 1.0f;
 	}
 
-inline void math_mat4_set_rotation_matrix_z ( mat4 *output, const float angle )
+static inline void math_mat4_set_rotation_matrix_z ( mat4 *output, const float angle )
 	{
 	float cosine = cosf ( angle );
 	float sin = sinf ( angle );
@@ -217,7 +232,7 @@ inline void math_mat4_set_rotation_matrix_z ( mat4 *output, const float angle )
 	output->vectors[3].raw[3] = 1.0f;
 	}
 
-inline void math_mat4_set_translation_matrix ( mat4 *output, const vec3 translation )
+static inline void math_mat4_set_translation_matrix ( mat4 *output, const vec3 translation )
 	{
 	output->vectors[0].raw[0] = 1.0f;
 	output->vectors[0].raw[1] = 0.0f;
@@ -237,7 +252,7 @@ inline void math_mat4_set_translation_matrix ( mat4 *output, const vec3 translat
 	output->vectors[3].raw[3] = 1.0f;
 	}
 
-inline void math_mat4_set_scale_matrix ( mat4 *output, const vec3 scale )
+static inline void math_mat4_set_scale_matrix ( mat4 *output, const vec3 scale )
 	{
 	output->vectors[0].raw[0] = scale.x;
 	output->vectors[0].raw[1] = 0.0f;
@@ -257,7 +272,7 @@ inline void math_mat4_set_scale_matrix ( mat4 *output, const vec3 scale )
 	output->vectors[3].raw[3] = 1.0f;
 	}
 
-inline void math_mat4_scale_vec3 ( mat4 *output, const mat4 input, const vec3 scale )
+static inline void math_mat4_scale_vec3 ( mat4 *output, const mat4 input, const vec3 scale )
 	{
 	for ( unsigned row = 0; row < 4; ++row )
 		{
@@ -268,7 +283,7 @@ inline void math_mat4_scale_vec3 ( mat4 *output, const mat4 input, const vec3 sc
 		}
 	}
 
-inline void math_mat4_scale_vec4 ( mat4 *output, const mat4 input, const vec4 scale )
+static inline void math_mat4_scale_vec4 ( mat4 *output, const mat4 input, const vec4 scale )
 	{
 	for ( unsigned row = 0; row < 4; ++row )
 		{
@@ -279,7 +294,7 @@ inline void math_mat4_scale_vec4 ( mat4 *output, const mat4 input, const vec4 sc
 		}
 	}
 
-inline void math_mat4_scale_scalar ( mat4 *output, const mat4 input, const float scale )
+static inline void math_mat4_scale_scalar ( mat4 *output, const mat4 input, const float scale )
 	{
 	for ( unsigned row = 0; row < 4; ++row )
 		{
@@ -290,176 +305,50 @@ inline void math_mat4_scale_scalar ( mat4 *output, const mat4 input, const float
 		}
 	}
 
-inline bool math_mat4_inverse ( mat4 *output, const mat4 input )
+static inline bool math_mat4_inverse ( mat4 *output, const mat4 input )
 	{
-	// Copied from https://stackoverflow.com/questions/1148309/inverting-a-4x4-matrix
-	/**
-	 * References an element of 4x4 matrix.
-	 * Calculate the linear storage index of the element and references it.
-	 */
-#define MAT(m,r,c) (m)[(c)*4+(r)]
-	/**
-	 * Swaps the values of two floating point variables.
-	 */
-#define SWAP_ROWS(a, b) { float *_tmp = a; (a)=(b); (b)=_tmp; }
+	float a = input.raw[0][0], b = input.raw[0][1], c = input.raw[0][2], d = input.raw[0][3];
+	float e = input.raw[1][0], f = input.raw[1][1], g = input.raw[1][2], h = input.raw[1][3];
+	float i = input.raw[2][0], j = input.raw[2][1], k = input.raw[2][2], l = input.raw[2][3];
+	float m = input.raw[3][0], n = input.raw[3][1], o = input.raw[3][2], p = input.raw[3][3];
+	float c1  = k * p - l * o,  c2  = c * h - d * g,  c3  = i * p - l * m;
+	float c4  = a * h - d * e,  c5  = j * p - l * n,  c6  = b * h - d * f;
+	float c7  = i * n - j * m,  c8  = a * f - b * e,  c9  = j * o - k * n;
+	float c10 = b * g - c * f,  c11 = i * o - k * m,  c12 = a * g - c * e;
+	float idt = 1.0f / ( c8 * c1 + c4 * c9 + c10 * c3 + c2 * c7 - c12 * c5 - c6 * c11 ), ndt = -idt;
 
-	const float *m = input.raw;
-	float wtmp[4][8];
-	float m0, m1, m2, m3, s;
-	float *r0, *r1, *r2, *r3;
+	output->raw[0][0] = ( f * c1  - g * c5  + h * c9 )  * idt;
+	output->raw[0][1] = ( b * c1  - c * c5  + d * c9 )  * ndt;
+	output->raw[0][2] = ( n * c2  - o * c6  + p * c10 ) * idt;
+	output->raw[0][3] = ( j * c2  - k * c6  + l * c10 ) * ndt;
 
-	r0 = wtmp[0], r1 = wtmp[1], r2 = wtmp[2], r3 = wtmp[3];
+	output->raw[1][0] = ( e * c1  - g * c3  + h * c11 ) * ndt;
+	output->raw[1][1] = ( a * c1  - c * c3  + d * c11 ) * idt;
+	output->raw[1][2] = ( m * c2  - o * c4  + p * c12 ) * ndt;
+	output->raw[1][3] = ( i * c2  - k * c4  + l * c12 ) * idt;
 
-	r0[0] = MAT ( m, 0, 0 ), r0[1] = MAT ( m, 0, 1 ),
-	                                 r0[2] = MAT ( m, 0, 2 ), r0[3] = MAT ( m, 0, 3 ),
-	                                     r0[4] = 1.0, r0[5] = r0[6] = r0[7] = 0.0,
+	output->raw[2][0] = ( e * c5  - f * c3  + h * c7 )  * idt;
+	output->raw[2][1] = ( a * c5  - b * c3  + d * c7 )  * ndt;
+	output->raw[2][2] = ( m * c6  - n * c4  + p * c8 )  * idt;
+	output->raw[2][3] = ( i * c6  - j * c4  + l * c8 )  * ndt;
 
-	                                         r1[0] = MAT ( m, 1, 0 ), r1[1] = MAT ( m, 1, 1 ),
-	                                             r1[2] = MAT ( m, 1, 2 ), r1[3] = MAT ( m, 1, 3 ),
-	                                                 r1[5] = 1.0, r1[4] = r1[6] = r1[7] = 0.0,
-
-	                                                     r2[0] = MAT ( m, 2, 0 ), r2[1] = MAT ( m, 2, 1 ),
-	                                                         r2[2] = MAT ( m, 2, 2 ), r2[3] = MAT ( m, 2, 3 ),
-	                                                             r2[6] = 1.0, r2[4] = r2[5] = r2[7] = 0.0,
-
-	                                                                 r3[0] = MAT ( m, 3, 0 ), r3[1] = MAT ( m, 3, 1 ),
-	                                                                     r3[2] = MAT ( m, 3, 2 ), r3[3] = MAT ( m, 3, 3 ),
-	                                                                         r3[7] = 1.0, r3[4] = r3[5] = r3[6] = 0.0;
-
-	/* choose pivot - or die */
-	if ( fabsf ( r3[0] ) > fabsf ( r2[0] ) ) SWAP_ROWS ( r3, r2 );
-	if ( fabsf ( r2[0] ) > fabsf ( r1[0] ) ) SWAP_ROWS ( r2, r1 );
-	if ( fabsf ( r1[0] ) > fabsf ( r0[0] ) ) SWAP_ROWS ( r1, r0 );
-	if ( 0.0F == r0[0] )
-		return false;
-
-	/* eliminate first variable     */
-	m1 = r1[0] / r0[0];
-	m2 = r2[0] / r0[0];
-	m3 = r3[0] / r0[0];
-	s = r0[1];
-	r1[1] -= m1 * s;
-	r2[1] -= m2 * s;
-	r3[1] -= m3 * s;
-	s = r0[2];
-	r1[2] -= m1 * s;
-	r2[2] -= m2 * s;
-	r3[2] -= m3 * s;
-	s = r0[3];
-	r1[3] -= m1 * s;
-	r2[3] -= m2 * s;
-	r3[3] -= m3 * s;
-	s = r0[4];
-	if ( s != 0.0F ) { r1[4] -= m1 * s; r2[4] -= m2 * s; r3[4] -= m3 * s; }
-	s = r0[5];
-	if ( s != 0.0F ) { r1[5] -= m1 * s; r2[5] -= m2 * s; r3[5] -= m3 * s; }
-	s = r0[6];
-	if ( s != 0.0F ) { r1[6] -= m1 * s; r2[6] -= m2 * s; r3[6] -= m3 * s; }
-	s = r0[7];
-	if ( s != 0.0F ) { r1[7] -= m1 * s; r2[7] -= m2 * s; r3[7] -= m3 * s; }
-
-	/* choose pivot - or die */
-	if ( fabsf ( r3[1] ) > fabsf ( r2[1] ) ) SWAP_ROWS ( r3, r2 );
-	if ( fabsf ( r2[1] ) > fabsf ( r1[1] ) ) SWAP_ROWS ( r2, r1 );
-	if ( 0.0F == r1[1] )
-		return false;
-
-	/* eliminate second variable */
-	m2 = r2[1] / r1[1];
-	m3 = r3[1] / r1[1];
-	r2[2] -= m2 * r1[2];
-	r3[2] -= m3 * r1[2];
-	r2[3] -= m2 * r1[3];
-	r3[3] -= m3 * r1[3];
-	s = r1[4];
-	if ( 0.0F != s ) { r2[4] -= m2 * s; r3[4] -= m3 * s; }
-	s = r1[5];
-	if ( 0.0F != s ) { r2[5] -= m2 * s; r3[5] -= m3 * s; }
-	s = r1[6];
-	if ( 0.0F != s ) { r2[6] -= m2 * s; r3[6] -= m3 * s; }
-	s = r1[7];
-	if ( 0.0F != s ) { r2[7] -= m2 * s; r3[7] -= m3 * s; }
-
-	/* choose pivot - or die */
-	if ( fabsf ( r3[2] ) > fabsf ( r2[2] ) ) SWAP_ROWS ( r3, r2 );
-	if ( 0.0F == r2[2] )
-		return false;
-
-	/* eliminate third variable */
-	m3 = r3[2] / r2[2];
-	r3[3] -= m3 * r2[3], r3[4] -= m3 * r2[4],
-	                              r3[5] -= m3 * r2[5], r3[6] -= m3 * r2[6],
-	                                       r3[7] -= m3 * r2[7];
-
-	/* last check */
-	if ( 0.0F == r3[3] )
-		return false;
-
-	s = 1.0F / r3[3];             /* now back substitute row 3 */
-	r3[4] *= s;
-	r3[5] *= s;
-	r3[6] *= s;
-	r3[7] *= s;
-
-	m2 = r2[3];                 /* now back substitute row 2 */
-	s = 1.0F / r2[2];
-	r2[4] = s * ( r2[4] - r3[4] * m2 ), r2[5] = s * ( r2[5] - r3[5] * m2 ),
-	        r2[6] = s * ( r2[6] - r3[6] * m2 ), r2[7] = s * ( r2[7] - r3[7] * m2 );
-	m1 = r1[3];
-	r1[4] -= r3[4] * m1, r1[5] -= r3[5] * m1,
-	                              r1[6] -= r3[6] * m1, r1[7] -= r3[7] * m1;
-	m0 = r0[3];
-	r0[4] -= r3[4] * m0, r0[5] -= r3[5] * m0,
-	                              r0[6] -= r3[6] * m0, r0[7] -= r3[7] * m0;
-
-	m1 = r1[2];                 /* now back substitute row 1 */
-	s = 1.0F / r1[1];
-	r1[4] = s * ( r1[4] - r2[4] * m1 ), r1[5] = s * ( r1[5] - r2[5] * m1 ),
-	        r1[6] = s * ( r1[6] - r2[6] * m1 ), r1[7] = s * ( r1[7] - r2[7] * m1 );
-	m0 = r0[2];
-	r0[4] -= r2[4] * m0, r0[5] -= r2[5] * m0,
-	                              r0[6] -= r2[6] * m0, r0[7] -= r2[7] * m0;
-
-	m0 = r0[1];                 /* now back substitute row 0 */
-	s = 1.0F / r0[0];
-	r0[4] = s * ( r0[4] - r1[4] * m0 ), r0[5] = s * ( r0[5] - r1[5] * m0 ),
-	        r0[6] = s * ( r0[6] - r1[6] * m0 ), r0[7] = s * ( r0[7] - r1[7] * m0 );
-
-	float *out = output->raw;
-	MAT ( out, 0, 0 ) = r0[4];
-	MAT ( out, 0, 1 ) = r0[5],
-	MAT ( out, 0, 2 ) = r0[6];
-	MAT ( out, 0, 3 ) = r0[7],
-	MAT ( out, 1, 0 ) = r1[4];
-	MAT ( out, 1, 1 ) = r1[5],
-	MAT ( out, 1, 2 ) = r1[6];
-	MAT ( out, 1, 3 ) = r1[7],
-	MAT ( out, 2, 0 ) = r2[4];
-	MAT ( out, 2, 1 ) = r2[5],
-	MAT ( out, 2, 2 ) = r2[6];
-	MAT ( out, 2, 3 ) = r2[7],
-	MAT ( out, 3, 0 ) = r3[4];
-	MAT ( out, 3, 1 ) = r3[5],
-	MAT ( out, 3, 2 ) = r3[6];
-	MAT ( out, 3, 3 ) = r3[7];
-
-#undef SWAP_ROWS
-#undef MAT
-
+	output->raw[3][0] = ( e * c9  - f * c11 + g * c7 )  * ndt;
+	output->raw[3][1] = ( a * c9  - b * c11 + c * c7 )  * idt;
+	output->raw[3][2] = ( m * c10 - n * c12 + o * c8 )  * ndt;
+	output->raw[3][3] = ( i * c10 - j * c12 + k * c8 )  * idt;
 	return true;
 	}
 
-inline void math_mat4_multiply ( mat4 *output, const mat4 m1, const mat4 m2 )
+static inline void math_mat4_multiply ( mat4 *output, const mat4 m1, const mat4 m2 )
 	{
-	float a00 = m1.vectors[0].raw[0], a01 = m1.vectors[0].raw[1], a02 = m1.vectors[0].raw[2], a03 = m1.vectors[0].raw[3],
-	      a10 = m1.vectors[1].raw[0], a11 = m1.vectors[1].raw[1], a12 = m1.vectors[1].raw[2], a13 = m1.vectors[1].raw[3],
-	      a20 = m1.vectors[2].raw[0], a21 = m1.vectors[2].raw[1], a22 = m1.vectors[2].raw[2], a23 = m1.vectors[2].raw[3],
-	      a30 = m1.vectors[3].raw[0], a31 = m1.vectors[3].raw[1], a32 = m1.vectors[3].raw[2], a33 = m1.vectors[3].raw[3],
-
-	      b00 = m2.vectors[0].raw[0], b01 = m2.vectors[0].raw[1], b02 = m2.vectors[0].raw[2], b03 = m2.vectors[0].raw[3],
-	      b10 = m2.vectors[1].raw[0], b11 = m2.vectors[1].raw[1], b12 = m2.vectors[1].raw[2], b13 = m2.vectors[1].raw[3],
-	      b20 = m2.vectors[2].raw[0], b21 = m2.vectors[2].raw[1], b22 = m2.vectors[2].raw[2], b23 = m2.vectors[2].raw[3],
-	      b30 = m2.vectors[3].raw[0], b31 = m2.vectors[3].raw[1], b32 = m2.vectors[3].raw[2], b33 = m2.vectors[3].raw[3];
+	float a00 = m1.vectors[0].raw[0], a01 = m1.vectors[0].raw[1], a02 = m1.vectors[0].raw[2], a03 = m1.vectors[0].raw[3];
+	float a10 = m1.vectors[1].raw[0], a11 = m1.vectors[1].raw[1], a12 = m1.vectors[1].raw[2], a13 = m1.vectors[1].raw[3];
+	float a20 = m1.vectors[2].raw[0], a21 = m1.vectors[2].raw[1], a22 = m1.vectors[2].raw[2], a23 = m1.vectors[2].raw[3];
+	float a30 = m1.vectors[3].raw[0], a31 = m1.vectors[3].raw[1], a32 = m1.vectors[3].raw[2], a33 = m1.vectors[3].raw[3];
+	float b00 = m2.vectors[0].raw[0], b01 = m2.vectors[0].raw[1], b02 = m2.vectors[0].raw[2], b03 = m2.vectors[0].raw[3];
+	float b10 = m2.vectors[1].raw[0], b11 = m2.vectors[1].raw[1], b12 = m2.vectors[1].raw[2], b13 = m2.vectors[1].raw[3];
+	float b20 = m2.vectors[2].raw[0], b21 = m2.vectors[2].raw[1], b22 = m2.vectors[2].raw[2], b23 = m2.vectors[2].raw[3];
+	float b30 = m2.vectors[3].raw[0], b31 = m2.vectors[3].raw[1], b32 = m2.vectors[3].raw[2], b33 = m2.vectors[3].raw[3];
 
 	output->vectors[0].raw[0] = a00 * b00 + a10 * b01 + a20 * b02 + a30 * b03;
 	output->vectors[0].raw[1] = a01 * b00 + a11 * b01 + a21 * b02 + a31 * b03;

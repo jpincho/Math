@@ -2,8 +2,9 @@
 #include "types.h"
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdbool.h>
 
-inline void math_mat2_dump ( const mat2 matrix )
+static inline void math_mat2_dump ( const mat2 matrix )
 	{
 	for ( unsigned index = 0; index < 2 * 2; ++index )
 		{
@@ -13,7 +14,7 @@ inline void math_mat2_dump ( const mat2 matrix )
 		}
 	}
 
-inline bool math_mat2_equals ( const mat2 first, const mat2 second )
+static inline bool math_mat2_equals ( const mat2 first, const mat2 second )
 	{
 	for ( unsigned index = 0; index < 2 * 2; ++index )
 		{
@@ -23,7 +24,7 @@ inline bool math_mat2_equals ( const mat2 first, const mat2 second )
 	return true;
 	}
 
-inline void math_mat2_copy ( mat2 *output, const mat2 input )
+static inline void math_mat2_copy ( mat2 *output, const mat2 input )
 	{
 	for ( unsigned column = 0; column < 2; ++column )
 		{
@@ -31,7 +32,7 @@ inline void math_mat2_copy ( mat2 *output, const mat2 input )
 		}
 	}
 
-inline void math_mat2_transpose ( mat2 *output, const mat2 input )
+static inline void math_mat2_transpose ( mat2 *output, const mat2 input )
 	{
 	for ( unsigned iterator1 = 0; iterator1 < 2; ++iterator1 )
 		{
@@ -42,7 +43,7 @@ inline void math_mat2_transpose ( mat2 *output, const mat2 input )
 		}
 	}
 
-inline void math_mat2_set_zero ( mat2 *output )
+static inline void math_mat2_set_zero ( mat2 *output )
 	{
 	for ( unsigned index = 0; index < 2 * 2; ++index )
 		{
@@ -50,7 +51,7 @@ inline void math_mat2_set_zero ( mat2 *output )
 		}
 	}
 
-inline void math_mat2_set_identity_matrix ( mat2 *output )
+static inline void math_mat2_set_identity_matrix ( mat2 *output )
 	{
 	output->raw[0] = 1.0f;
 	output->raw[1] = 0.0f;

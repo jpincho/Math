@@ -2,8 +2,9 @@
 #include "types.h"
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdbool.h>
 
-inline void math_mat3_dump ( const mat3 matrix )
+static inline void math_mat3_dump ( const mat3 matrix )
 	{
 	for ( unsigned index = 0; index < 3 * 3; ++index )
 		{
@@ -13,7 +14,7 @@ inline void math_mat3_dump ( const mat3 matrix )
 		}
 	}
 
-inline bool math_mat3_equals ( const mat3 first, const mat3 second )
+static inline bool math_mat3_equals ( const mat3 first, const mat3 second )
 	{
 	for ( unsigned index = 0; index < 3 * 3; ++index )
 		{
@@ -23,7 +24,7 @@ inline bool math_mat3_equals ( const mat3 first, const mat3 second )
 	return true;
 	}
 
-inline void math_mat3_copy ( mat3 *output, const mat3 input )
+static inline void math_mat3_copy ( mat3 *output, const mat3 input )
 	{
 	for ( unsigned column = 0; column < 3; ++column )
 		{
@@ -31,7 +32,7 @@ inline void math_mat3_copy ( mat3 *output, const mat3 input )
 		}
 	}
 
-inline void math_mat3_transpose ( mat3 *output, const mat3 input )
+static inline void math_mat3_transpose ( mat3 *output, const mat3 input )
 	{
 	for ( unsigned iterator1 = 0; iterator1 < 3; ++iterator1 )
 		{
@@ -42,7 +43,7 @@ inline void math_mat3_transpose ( mat3 *output, const mat3 input )
 		}
 	}
 
-inline void math_mat3_set_zero ( mat3 *output )
+static inline void math_mat3_set_zero ( mat3 *output )
 	{
 	for ( unsigned index = 0; index < 3 * 3; ++index )
 		{
@@ -50,7 +51,7 @@ inline void math_mat3_set_zero ( mat3 *output )
 		}
 	}
 
-inline void math_mat3_set_identity_matrix ( mat3 *output )
+static inline void math_mat3_set_identity_matrix ( mat3 *output )
 	{
 	output->raw[0] = 1.0f;
 	output->raw[1] = 0.0f;
@@ -63,7 +64,7 @@ inline void math_mat3_set_identity_matrix ( mat3 *output )
 	output->raw[8] = 1.0f;
 	}
 
-inline void math_mat3_from_mat4 ( mat3 *output, const mat4 input )
+static inline void math_mat3_from_mat4 ( mat3 *output, const mat4 input )
 	{
 	for ( unsigned row = 0; row < 3; ++row )
 		{
@@ -73,15 +74,14 @@ inline void math_mat3_from_mat4 ( mat3 *output, const mat4 input )
 		}
 	}
 
-inline void math_mat3_invert ( mat3 *output, const mat3 input )
+static inline void math_mat3_invert ( mat3 *output, const mat3 input )
 	{
 	// copied from cglm
-	float a = input.vectors[0].raw[0], b = input.vectors[0].raw[1], c = input.vectors[0].raw[2],
-	      d = input.vectors[1].raw[0], e = input.vectors[1].raw[1], f = input.vectors[1].raw[2],
-	      g = input.vectors[2].raw[0], h = input.vectors[2].raw[1], i = input.vectors[2].raw[2],
-
-	      c1 = e * i - f * h, c2 = d * i - g * f, c3 = d * h - g * e,
-	      idt = 1.0f / ( a * c1 - b * c2 + c * c3 ), ndt = -idt;
+	float a = input.vectors[0].raw[0], b = input.vectors[0].raw[1], c = input.vectors[0].raw[2];
+	float d = input.vectors[1].raw[0], e = input.vectors[1].raw[1], f = input.vectors[1].raw[2];
+	float g = input.vectors[2].raw[0], h = input.vectors[2].raw[1], i = input.vectors[2].raw[2];
+	float c1 = e * i - f * h, c2 = d * i - g * f, c3 = d * h - g * e;
+	float idt = 1.0f / ( a * c1 - b * c2 + c * c3 ), ndt = -idt;
 
 	output->vectors[0].raw[0] = idt * c1;
 	output->vectors[0].raw[1] = ndt * ( b * i - h * c );
@@ -94,7 +94,7 @@ inline void math_mat3_invert ( mat3 *output, const mat3 input )
 	output->vectors[2].raw[2] = idt * ( a * e - d * b );
 	}
 
-inline void math_mat3_scale_vec3 ( mat3 *output, const mat3 input, const vec3 scale )
+static inline void math_mat3_scale_vec3 ( mat3 *output, const mat3 input, const vec3 scale )
 	{
 	for ( unsigned row = 0; row < 3; ++row )
 		{
@@ -104,7 +104,7 @@ inline void math_mat3_scale_vec3 ( mat3 *output, const mat3 input, const vec3 sc
 		}
 	}
 
-inline void math_mat3_scale_scalar ( mat3 *output, const mat3 input, const float scale )
+static inline void math_mat3_scale_scalar ( mat3 *output, const mat3 input, const float scale )
 	{
 	for ( unsigned row = 0; row < 3; ++row )
 		{

@@ -1,4 +1,9 @@
 #pragma once
+#if defined __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-braces"
+#endif
+
 #include "ivec2_funcs.h"
 #include "uvec2_funcs.h"
 #include "vec2_funcs.h"
@@ -19,7 +24,7 @@
 
 #include "constants.h"
 
-inline vec3 math_multiply_vec3_by_vec3 ( const vec3 first, const vec3 second )
+static inline vec3 math_multiply_vec3_by_vec3 ( const vec3 first, const vec3 second )
 	{
 	vec3 output;
 	for ( unsigned index = 0; index < 3; ++index )
@@ -29,7 +34,7 @@ inline vec3 math_multiply_vec3_by_vec3 ( const vec3 first, const vec3 second )
 	return output;
 	}
 
-inline vec3 math_multiply_vec3_by_scalar ( const vec3 vector, const float scalar )
+static inline vec3 math_multiply_vec3_by_scalar ( const vec3 vector, const float scalar )
 	{
 	vec3 output;
 	for ( unsigned index = 0; index < 3; ++index )
@@ -39,7 +44,7 @@ inline vec3 math_multiply_vec3_by_scalar ( const vec3 vector, const float scalar
 	return output;
 	}
 
-inline vec3 math_add_vec3_to_vec3 ( const vec3 first, const vec3 second )
+static inline vec3 math_add_vec3_to_vec3 ( const vec3 first, const vec3 second )
 	{
 	vec3 output;
 	for ( unsigned index = 0; index < 3; ++index )
@@ -50,7 +55,7 @@ inline vec3 math_add_vec3_to_vec3 ( const vec3 first, const vec3 second )
 	}
 
 // Basically, rotate a vector by a quaternion
-inline vec3 math_multiply_vec3_by_quat ( const vec3 vector_input, const quat quat_input )
+static inline vec3 math_multiply_vec3_by_quat ( const vec3 vector_input, const quat quat_input )
 	{
 	// According to https://blog.molecular-matters.com/2013/05/24/a-faster-quaternion-vector-multiplication/
 	// t = 2 * cross ( q.xyz, v )
@@ -64,7 +69,7 @@ inline vec3 math_multiply_vec3_by_quat ( const vec3 vector_input, const quat qua
 	return output;
 	}
 
-inline quat math_multiply_quat_by_quat ( const quat input1, const quat input2 )
+static inline quat math_multiply_quat_by_quat ( const quat input1, const quat input2 )
 	{
 	const float x1x2 = input1.x * input2.x;
 	const float x1y2 = input1.x * input2.y;
@@ -93,3 +98,7 @@ inline quat math_multiply_quat_by_quat ( const quat input1, const quat input2 )
 	output.w = w1w2 - x1x2 - y1y2 - z1z2;
 	return output;
 	}
+
+#if defined __GNUC__
+#pragma GCC diagnostic pop
+#endif

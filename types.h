@@ -132,6 +132,7 @@ typedef struct
 	union
 		{
 		vec4 vectors[4];
-		float raw[4 * 4];
+		float raw[4][4];
+		float flat_raw[16];
 		};
 	} mat4;

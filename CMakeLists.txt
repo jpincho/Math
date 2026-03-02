@@ -27,3 +27,6 @@ endif()
 
 file ( GLOB SOURCES "*.h" "*.c" )
 add_library ( Math ${SOURCES} )
+if ( CMAKE_CXX_COMPILER_ID STREQUAL "GNU" )
+	target_link_libraries ( Math PUBLIC m )
+endif()
