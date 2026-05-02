@@ -163,8 +163,9 @@ static inline void math_quat_to_mat4 ( mat4 *output, const quat input )
 	output->vectors[1].raw[2] = yz - wx;
 	output->vectors[2].raw[0] = xz - wy;
 
-	output->vectors[3].raw[0] = output->vectors[3].raw[1] = output->vectors[3].raw[2] = output->vectors[3].raw[3] = 0.0f;
+	output->vectors[3].raw[0] = output->vectors[3].raw[1] = output->vectors[3].raw[2] = 0.0f;
 	output->vectors[0].raw[3] = output->vectors[1].raw[3] = output->vectors[2].raw[3] = 0.0f;
+	output->vectors[3].raw[3] = 1.0f;
 	}
 
 static inline void math_quat_to_mat4_transposed ( mat4 *output, const quat input )
