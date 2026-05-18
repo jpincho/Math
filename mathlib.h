@@ -44,6 +44,22 @@ static inline vec3 math_multiply_vec3_by_scalar ( const vec3 vector, const float
 	return output;
 	}
 
+static inline vec3 math_multiply_vec3_by_mat3 ( const vec3 input_vector, const mat3 input_matrix )
+	{
+	vec3 output;
+	output.x = input_matrix.vectors[0].raw[0] * input_vector.x + input_matrix.vectors[1].raw[0] * input_vector.y + input_matrix.vectors[2].raw[0];
+	output.y = input_matrix.vectors[0].raw[1] * input_vector.x + input_matrix.vectors[1].raw[1] * input_vector.y + input_matrix.vectors[2].raw[1];
+	output.z = input_matrix.vectors[0].raw[2] * input_vector.x + input_matrix.vectors[1].raw[2] * input_vector.y + input_matrix.vectors[2].raw[2];
+	return output;
+	}
+
+static inline void math_multiply_vec3_by_mat3_inplace ( vec3 *output, const vec3 input_vector, const mat3 input_matrix )
+	{
+	output->x = input_matrix.vectors[0].raw[0] * input_vector.x + input_matrix.vectors[1].raw[0] * input_vector.y + input_matrix.vectors[2].raw[0];
+	output->y = input_matrix.vectors[0].raw[1] * input_vector.x + input_matrix.vectors[1].raw[1] * input_vector.y + input_matrix.vectors[2].raw[1];
+	output->z = input_matrix.vectors[0].raw[2] * input_vector.x + input_matrix.vectors[1].raw[2] * input_vector.y + input_matrix.vectors[2].raw[2];
+	}
+
 static inline vec3 math_add_vec3_to_vec3 ( const vec3 first, const vec3 second )
 	{
 	vec3 output;
