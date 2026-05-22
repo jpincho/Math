@@ -96,6 +96,18 @@ static inline void math_mat4_set_perspective_matrix ( mat4 *output, const float 
 	output->vectors[3].raw[2] = 2.0f * near * far * fn;
 	}
 
+static inline void math_mat4_set_orthographic_matrix ( mat4 *output, const float left, const float right, const float top, const float bottom, const float near, const float far )
+	{
+	math_mat4_set_zero ( output );
+	output->vectors[0].raw[0] = 2.0f / ( right - left );
+	output->vectors[1].raw[1] = 2.0f / ( top - bottom );
+	output->vectors[2].raw[2] = -2.0f / ( far - near );
+	output->vectors[3].raw[0] = - ( right + left ) / ( right - left );
+	output->vectors[3].raw[1] = - ( top + bottom ) / ( top - bottom );
+	output->vectors[3].raw[2] = - ( far + near ) / ( far - near );
+	output->vectors[3].raw[3] = 1.0f;
+	}
+
 static inline void math_mat4_set_right_handed_view_matrix ( mat4 *output, const vec3 camera_pos, const vec3 front, const vec3 up )
 	{
 	vec3 unit_front;
@@ -366,4 +378,12 @@ static inline void math_mat4_multiply ( mat4 *output, const mat4 m1, const mat4 
 	output->vectors[3].raw[1] = a01 * b30 + a11 * b31 + a21 * b32 + a31 * b33;
 	output->vectors[3].raw[2] = a02 * b30 + a12 * b31 + a22 * b32 + a32 * b33;
 	output->vectors[3].raw[3] = a03 * b30 + a13 * b31 + a23 * b32 + a33 * b33;
+	}
+
+static inline void math_mat4_lerp ( mat4 *output, const mat4 m1, const mat4 m2, const float factor )
+	{
+	for ( unsigned index = 0; index < 4 * 4; ++index )
+		{
+		output->flat_raw[index] = m1.flat_raw[index] + factor * ( m2.flat_raw[index] - m1.flat_raw[index] );
+		}
 	}

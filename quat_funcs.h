@@ -9,6 +9,24 @@ static inline void math_quat_set_identity ( quat *output )
 	output->w = 1.0f;
 	}
 
+static inline bool math_quat_equals ( const quat first, const quat second )
+	{
+	for ( unsigned index = 0; index < 4; ++index )
+		{
+		if ( first.raw[index] != second.raw[index] )
+			return false;
+		}
+	return true;
+	}
+
+static inline void math_quat_copy ( quat *output, const quat input )
+	{
+	for ( unsigned index = 0; index < 4; ++index )
+		{
+		output->raw[index] = input.raw[index];
+		}
+	}
+
 static inline float math_quat_length ( const quat input )
 	{
 	float result = 0;
