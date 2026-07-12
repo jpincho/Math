@@ -117,3 +117,9 @@ static inline void math_vec2_scale ( vec2 *output, vec2 input, const float scale
 	for ( unsigned index = 0; index < 2; ++index )
 		output->raw[index] = ( float ) ( ( float ) input.raw[index] * scale );
 	}
+
+static inline void math_vec2_lerp ( vec2 *output, vec2 initial, vec2 final, const float factor )
+	{
+	for ( unsigned index = 0; index < 2; ++index )
+		output->raw[index] = ( float ) ( ( float ) initial.raw[index] * ( 1.0f - factor ) + ( float ) final.raw[index] * factor );
+	}

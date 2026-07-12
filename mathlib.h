@@ -24,6 +24,16 @@
 
 #include "constants.h"
 
+static inline vec3 math_scale_vec3 ( const vec3 vector, const float scalar )
+	{
+	vec3 output;
+	for ( unsigned index = 0; index < 3; ++index )
+		{
+		output.raw[index] = vector.raw[index] * scalar;
+		}
+	return output;
+	}
+
 static inline vec3 math_multiply_vec3_by_vec3 ( const vec3 first, const vec3 second )
 	{
 	vec3 output;
@@ -66,6 +76,16 @@ static inline vec3 math_add_vec3_to_vec3 ( const vec3 first, const vec3 second )
 	for ( unsigned index = 0; index < 3; ++index )
 		{
 		output.raw[index] = first.raw[index] + second.raw[index];
+		}
+	return output;
+	}
+
+static inline vec3 math_subtract_vec3_from_vec3 ( const vec3 first, const vec3 second )
+	{
+	vec3 output;
+	for ( unsigned index = 0; index < 3; ++index )
+		{
+		output.raw[index] = first.raw[index] - second.raw[index];
 		}
 	return output;
 	}

@@ -146,6 +146,12 @@ static inline void math_vec3_scale ( vec3 *output, vec3 input, const float scale
 		output->raw[index] = ( float ) ( ( float ) input.raw[index] * scale );
 	}
 
+static inline void math_vec3_lerp ( vec3 *output, vec3 initial, vec3 final, const float factor )
+	{
+	for ( unsigned index = 0; index < 3; ++index )
+		output->raw[index] = ( float ) ( ( float ) initial.raw[index] * ( 1.0f - factor ) + ( float ) final.raw[index] * factor );
+	}
+
 static inline void math_vec3_multiply_by_mat3 ( vec3 *output, const mat3 input_matrix, const vec3 input_vector )
 	{
 	output->x = input_matrix.vectors[0].raw[0] * input_vector.x + input_matrix.vectors[1].raw[0] * input_vector.y + input_matrix.vectors[2].raw[0];
