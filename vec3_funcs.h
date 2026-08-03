@@ -146,6 +146,11 @@ static inline void math_vec3_scale ( vec3 *output, vec3 input, const float scale
 		output->raw[index] = ( float ) ( ( float ) input.raw[index] * scale );
 	}
 
+static inline void math_vec3_scale_to_length ( vec3 *output, const float desired_length )
+	{
+	math_vec3_scale ( output, *output, desired_length / math_vec3_length ( *output ) );
+	}
+
 static inline void math_vec3_lerp ( vec3 *output, vec3 initial, vec3 final, const float factor )
 	{
 	for ( unsigned index = 0; index < 3; ++index )

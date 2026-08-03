@@ -126,3 +126,8 @@ inline void math_TYPENAME_scale ( TYPENAME *output, TYPENAME input, const float 
 	for ( unsigned index = 0; index < COMPONENT_COUNT; ++index )
 		output->raw[index] = ( TYPE ) ( ( float ) input.raw[index] * scale );
 	}
+
+static inline void math_TYPENAME_scale_to_length ( TYPENAME *output, const float desired_length )
+	{
+	math_TYPENAME_scale ( output, *output, desired_length / math_TYPENAME_length ( *output ) );
+	}
