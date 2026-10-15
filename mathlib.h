@@ -139,6 +139,6 @@ static inline quat math_multiply_quat_by_quat ( const quat input1, const quat in
 #pragma GCC diagnostic pop
 #endif
 
-#define MAKE_VEC2(__TYPE__,__X__,__Y__) (__TYPE__){__X__, __Y__}
-#define MAKE_VEC3(__TYPE__,__X__,__Y__,__Z__) (__TYPE__){__X__, __Y__,__Z__}
-#define MAKE_VEC4(__TYPE__,__X__,__Y__,__Z__,__W__) (__TYPE__){__X__, __Y__,__Z__,__W__}
+#define MAKE_VEC2(__X__,__Y__) (vec2){__X__, __Y__}
+#define MAKE_VEC3(__X__,__Y__,__Z__) (vec3){__X__, __Y__,__Z__}
+#define MAKE_VEC4(__X__,__Y__,__Z__,__W__) (vec4){__X__, __Y__,__Z__,__W__}
