@@ -318,3 +318,42 @@ static inline void math_quat_conjugate ( quat *output, const quat input )
 	output->z = -input.z;
 	output->w = input.w;
 	}
+
+static inline void math_quat_slerp ( quat *output, const quat initial, const quat final, const float factor )
+	{
+	quat normalized_from = initial;
+	quat normalized_to = final;
+	math_quat_normalize ( &normalized_from );
+	math_quat_normalize ( &normalized_to );
+
+	float dot = ( normalized_from.x * normalized_to.x ) +
+	            ( normalized_from.y * normalized_to.y ) +
+	            ( normalized_from.z * normalized_to.z ) +
+	            ( normalized_from.w * normalized_to.w );
+	if ( dot < 0.0f )
+		{
+		math_vec4_scale ( &normalized_to, normalized_to, -1.0f );
+		dot = -dot;
+		}
+	dot = fminf ( dot, 1.0f );
+
+	// check if the two quaternions are nearly identical. If so, interpolate linearly, instead of spherically
+	if ( dot > 0.9995f )
+		{
+		output->x = normalized_from.x + ( ( normalized_to.x - normalized_from.x ) * factor );
+		output->y = normalized_from.y + ( ( normalized_to.y - normalized_from.y ) * factor );
+		output->z = normalized_from.z + ( ( normalized_to.z - normalized_from.z ) * factor );
+		output->w = normalized_from.w + ( ( normalized_to.w - normalized_from.w ) * factor );
+		math_quat_normalize ( output );
+		}
+
+	const float theta = acosf ( dot );
+	const float sin_theta = sinf ( theta );
+	const float from_weight = sinf ( ( 1.0f - factor ) * theta ) / sin_theta;
+	const float to_weight = sinf ( factor * theta ) / sin_theta;
+	output->x = ( normalized_from.x * from_weight ) + ( normalized_to.x * to_weight );
+	output->y = ( normalized_from.y * from_weight ) + ( normalized_to.y * to_weight );
+	output->z = ( normalized_from.z * from_weight ) + ( normalized_to.z * to_weight );
+	output->w = ( normalized_from.w * from_weight ) + ( normalized_to.w * to_weight );
+	math_quat_normalize ( output );
+	}

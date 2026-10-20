@@ -18,3 +18,7 @@ const mat4 MATH_MAT4_IDENTITY =
 const vec2 MATH_VEC2_ZERO = { 0.0f, 0.0f };
 const vec3 MATH_VEC3_ZERO = { 0.0f, 0.0f, 0.0f };
 const vec4 MATH_VEC4_ZERO = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+const vec2 MATH_VEC2_ONE = { 1.0f, 1.0f };
+const vec3 MATH_VEC3_ONE = { 1.0f, 1.0f, 1.0f };
+const vec4 MATH_VEC4_ONE = { 1.0f, 1.0f, 1.0f, 1.0f };

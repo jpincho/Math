@@ -9,6 +9,10 @@ extern const vec2 MATH_VEC2_ZERO;
 extern const vec3 MATH_VEC3_ZERO;
 extern const vec4 MATH_VEC4_ZERO;
 
+extern const vec2 MATH_VEC2_ONE;
+extern const vec3 MATH_VEC3_ONE;
+extern const vec4 MATH_VEC4_ONE;
+
 #define MATH_E        2.71828182845904523536   // e
 #define MATH_LOG2E    1.44269504088896340736   // log2(e)
 #define MATH_LOG10E   0.434294481903251827651  // log10(e)
