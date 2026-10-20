@@ -387,3 +387,42 @@ static inline void math_mat4_lerp ( mat4 *output, const mat4 m1, const mat4 m2, 
 		output->flat_raw[index] = m1.flat_raw[index] + factor * ( m2.flat_raw[index] - m1.flat_raw[index] );
 		}
 	}
+
+static inline void math_decompose_local_matrix ( const mat4 local, vec3 *position, quat *rotation, vec3 *scale )
+	{
+	math_vec3_set ( position, local.vectors[3].raw[0], local.vectors[3].raw[1], local.vectors[3].raw[2] );
+
+	vec3 temp_columns[3];
+	for ( unsigned column_index = 0; column_index < 3; ++column_index )
+		{
+		math_vec3_set ( &temp_columns[column_index], local.vectors[column_index].raw[0], local.vectors[column_index].raw[1], local.vectors[column_index].raw[2] );
+		scale->raw[column_index] = math_vec3_length ( temp_columns[column_index] );
+		if ( scale->raw[column_index] > 1.0e-8f )
+			math_vec3_scale ( &temp_columns[column_index], temp_columns[column_index], 1.0f / scale->raw[column_index] );
+		else
+			{
+			math_vec3_set ( &temp_columns[column_index], ( column_index == 0 ) ? 1.0f : 0.0f, ( column_index == 1 ) ? 1.0f : 0.0f, ( column_index == 2 ) ? 1.0f : 0.0f );
+			scale->raw[column_index] = 1.0f;
+			}
+		}
+
+	mat3 base_matrix;
+	base_matrix.vectors[0] = temp_columns[0];
+	base_matrix.vectors[1] = temp_columns[1];
+	base_matrix.vectors[2] = temp_columns[2];
+	math_mat3_to_quat ( rotation, base_matrix );
+	math_quat_normalize ( rotation );
+	}
+
+static inline void math_compose_local_matrix ( mat4 *local, const vec3 position, const quat rotation, const vec3 scale )
+	{
+	mat4 translation;
+	mat4 orientation;
+	mat4 scale_matrix;
+	mat4 scaled_orientation;
+	math_mat4_set_translation_matrix ( &translation, position );
+	math_quat_to_mat4 ( &orientation, rotation );
+	math_mat4_set_scale_matrix ( &scale_matrix, scale );
+	math_mat4_multiply ( &scaled_orientation, orientation, scale_matrix );
+	math_mat4_multiply ( local, translation, scaled_orientation );
+	}
